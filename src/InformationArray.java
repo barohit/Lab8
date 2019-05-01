@@ -8,6 +8,8 @@ public class InformationArray {
 	public static void main(String[] args) {
 		
 		char ans = 'y'; 
+		boolean infoCheck = false; 
+		boolean continueCheck = false;
 		Student [] studentCatalog = new Student[50]; 
 		
 		// note, the data is made up and does not reflect the truth about any individual  listed. 
@@ -28,6 +30,9 @@ public class InformationArray {
 		
 		System.out.println("Welcome to our Java class. Here we have an array of four students, which contains information about their name, age, hometown and favorite food "); 
 		while (ans == 'y')  {
+			infoCheck = false; 
+			continueCheck = false; 
+			
 			System.out.println("Which student would you like to learn more about?"); 
 			
 			Scanner scan = new Scanner(System.in);
@@ -52,46 +57,59 @@ public class InformationArray {
 				System.out.println("Sorry, that student does not exist. Please try again: "); 
 				continue; 
 			}
-			System.out.println("enter age, hometown, or favorite food"); 
-			String info = scan.nextLine(); 
+			System.out.println("enter age, hometown, or favorite food");
 			
-			try {
-				if (Pattern.matches("age*", info)) {
-			
-					System.out.println("This person is: " + studentCatalog[desiredIndex].age + " years old");   
-				} else if (Pattern.matches("hometown*", info)) {
-					System.out.println("This person's hometown is : " + studentCatalog[desiredIndex].hometown); 
-				} else if (Pattern.matches("favorite\\sfood*", info)) {
-		
-					System.out.println("This person's favorite food is: " + studentCatalog[desiredIndex].favoriteFood); 
-				} else {
-					IllegalArgumentException e = new IllegalArgumentException(); 
-					throw e; 
+				
+		while (infoCheck == false) {	
+				String info = scan.nextLine(); 
+				
+				try {
+					if (Pattern.matches("age*", info)) {
+						infoCheck = true; 
+						System.out.println("This person is: " + studentCatalog[desiredIndex].age + " years old");   
+					} else if (Pattern.matches("hometown*", info)) {
+						System.out.println("This person's hometown is : " + studentCatalog[desiredIndex].hometown); 
+						infoCheck = true; 
+					} else if (Pattern.matches("favorite\\sfood*", info)) {
+						infoCheck = true; 
+						System.out.println("This person's favorite food is: " + studentCatalog[desiredIndex].favoriteFood); 
+					} else {
+						IllegalArgumentException e = new IllegalArgumentException(); 
+						throw e; 
+					}
+				} catch (IllegalArgumentException e) {
+					System.out.println("Sorry, that data does not exist. Please try again. (enter 'hometown' or 'age' or 'favorite food'");
+					continue; 
 				}
-			} catch (IllegalArgumentException e) {
-				System.out.println("Sorry, that data does not exist. Please try again. (enter 'hometown' or 'age' or 'favorite food'");
-			}
-			
-			System.out.println("Would you like to know more? Enter (y/n) for yes or no respectively"); 
-			try  {
-				ans = Character.toLowerCase(scan.next().charAt(0)); 
-				Exception e = new Exception(); 
-				if (ans != 'y' && ans != 'n') {
-					throw e; 
+		}		
+		 
+	
+				System.out.println("Would you like to know more? Enter (y/n) for yes or no respectively"); 
+				while (continueCheck == false) {
+					try  {
+						ans = Character.toLowerCase(scan.next().charAt(0)); 
+						Exception e = new Exception(); 
+						if (ans != 'y' && ans != 'n') {
+							throw e; 
+						} else {
+							continueCheck = true; 
+						}
+					} catch (InputMismatchException e) {
+						System.out.println("Sorry, wrong answer. Please enter y for yes, or n for no");
+						ans = Character.toLowerCase(scan.next().charAt(0)); 
+						continue; 
+					}
+					catch (Exception e) { // just in case they enter a string, but not the right input. 
+						System.out.println("Sorry, invalid answer. Please enter y for yes, or n for no");
+						ans = Character.toLowerCase(scan.next().charAt(0)); 
+						continue; 
+					}
+					
+					if (ans == 'n') {
+						System.out.println("Thanks!"); 
+						continue; 
+					}
 				}
-			} catch (InputMismatchException e) {
-				System.out.println("Sorry, wrong answer. Please enter y for yes, or n for no");
-				ans = Character.toLowerCase(scan.next().charAt(0)); 
-			}
-			catch (Exception e) { // just in case they enter a string, but not the right input. 
-				System.out.println("Sorry, invalid answer. Please enter y for yes, or n for no");
-				ans = Character.toLowerCase(scan.next().charAt(0)); 
-			}
-			
-			if (ans == 'n') {
-				System.out.println("Thanks!"); 
-			}
-			
 
 		}
 	
